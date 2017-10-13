@@ -1,4 +1,4 @@
-# SBU-Internal-Robotics-Competition
+# SBU Internal Robotics Competition 2017
 
 This repository contains the code and schematic diagrams for the making of a robot for the Stony Brook Robot Design Team Internal Competition 2017.
 
@@ -10,6 +10,9 @@ Manuel Carbajal (Electrical Team) <br />
 Conor Burbige (Electrical, Mechanical Teams) <br />
 Christian Zoni (Mechanical Team) <br />
 Joseph Maalouf (Mechanical Team) <br />
+
+<b>Electrical Software:</b> <br />
+KiCad <br />
 
 <b>Electrical Components:</b> <br />
 1 x EBL 600mAh 9 Volt Li-Ion Battery <br />
