@@ -387,4 +387,34 @@ Wire Wire Line
 	6490 4150 6220 4150
 Wire Wire Line
 	6220 4150 6220 4840
+Text Notes 7390 7500 0    60   ~ 12
+Arduino Connected to Motors Using a H-Bridge\n
+$Comp
+L +9V #PWR?
+U 1 1 59E05DE5
+P 4050 4820
+F 0 "#PWR?" H 4050 4670 50  0001 C CNN
+F 1 "+9V" H 4050 4960 50  0000 C CNN
+F 2 "" H 4050 4820 50  0001 C CNN
+F 3 "" H 4050 4820 50  0001 C CNN
+	1    4050 4820
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4780 3750 4050 3750
+Wire Wire Line
+	4050 3750 4050 4820
+$Comp
+L GND #PWR?
+U 1 1 59E10209
+P 2860 5060
+F 0 "#PWR?" H 2860 4810 50  0001 C CNN
+F 1 "GND" H 2860 4910 50  0000 C CNN
+F 2 "" H 2860 5060 50  0001 C CNN
+F 3 "" H 2860 5060 50  0001 C CNN
+	1    2860 5060
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2860 5060 2860 4450
 $EndSCHEMATC

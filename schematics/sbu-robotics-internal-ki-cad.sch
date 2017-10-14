@@ -265,30 +265,6 @@ F 3 "" H 2560 4400 50  0001 C CNN
 	1    2760 3350
 	1    0    0    -1  
 $EndComp
-$Comp
-L NOT-Hex N2
-U 1 1 59E0235E
-P 6560 4280
-F 0 "N2" H 6460 4560 50  0000 C CNN
-F 1 "N-Gate" H 6460 4470 50  0000 C CNN
-F 2 "footprint" H 6560 3280 50  0001 C CNN
-F 3 "datasheet" H 6560 3180 50  0001 C CNN
-F 4 "bom" H 6560 3080 50  0001 C CNN "BOM"
-	1    6560 4280
-	0    -1   -1   0   
-$EndComp
-$Comp
-L NOT-Hex N1
-U 1 1 59E02C01
-P 3960 3650
-F 0 "N1" H 3960 3950 50  0000 C CNN
-F 1 "N-Gate" H 3960 3850 50  0000 C CNN
-F 2 "footprint" H 3960 2650 50  0001 C CNN
-F 3 "datasheet" H 3960 2550 50  0001 C CNN
-F 4 "bom" H 3960 2450 50  0001 C CNN "BOM"
-	1    3960 3650
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2960 2350 6280 2350
 Wire Wire Line
@@ -353,20 +329,9 @@ Wire Wire Line
 Wire Wire Line
 	1980 3450 1980 4810
 Wire Wire Line
-	1980 4810 3730 4810
-Wire Wire Line
-	3730 4810 3730 4580
-Wire Wire Line
-	3730 4580 6560 4580
-Wire Wire Line
-	6500 4580 6500 4640
-Wire Wire Line
-	6500 4640 6870 4640
-Wire Wire Line
-	6870 4640 6870 3150
+	1980 4810 6870 4810
 Wire Wire Line
 	6870 3150 6280 3150
-Connection ~ 6500 4580
 Wire Wire Line
 	6560 3980 6560 3650
 Wire Wire Line
@@ -390,10 +355,10 @@ Wire Wire Line
 Text Notes 7390 7500 0    60   ~ 12
 Arduino Connected to Motors Using a H-Bridge\n
 $Comp
-L +9V #PWR?
+L +9V #PWR2
 U 1 1 59E05DE5
 P 4050 4820
-F 0 "#PWR?" H 4050 4670 50  0001 C CNN
+F 0 "#PWR2" H 4050 4670 50  0001 C CNN
 F 1 "+9V" H 4050 4960 50  0000 C CNN
 F 2 "" H 4050 4820 50  0001 C CNN
 F 3 "" H 4050 4820 50  0001 C CNN
@@ -404,4 +369,91 @@ Wire Wire Line
 	4780 3750 4050 3750
 Wire Wire Line
 	4050 3750 4050 4820
+$Comp
+L GND #PWR1
+U 1 1 59E10209
+P 2860 5060
+F 0 "#PWR1" H 2860 4810 50  0001 C CNN
+F 1 "GND" H 2860 4910 50  0000 C CNN
+F 2 "" H 2860 5060 50  0001 C CNN
+F 3 "" H 2860 5060 50  0001 C CNN
+	1    2860 5060
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2860 5060 2860 4450
+$Comp
+L NAND-Quad U1
+U 1 1 59E26706
+P 3960 3650
+F 0 "U1" H 3960 3950 50  0000 C CNN
+F 1 "NAND-Quad" H 3960 3850 50  0000 C CNN
+F 2 "footprint" H 3960 2750 50  0001 C CNN
+F 3 "datasheet" H 3960 2650 50  0001 C CNN
+F 4 "bom" H 3960 2550 50  0001 C CNN "BOM"
+	1    3960 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3660 3600 3660 3700
+$Comp
+L NAND-Quad U2
+U 1 1 59E26C1C
+P 6560 4280
+F 0 "U2" H 6560 4580 50  0000 C CNN
+F 1 "NAND-Quad" H 6560 4480 50  0000 C CNN
+F 2 "footprint" H 6560 3380 50  0001 C CNN
+F 3 "datasheet" H 6560 3280 50  0001 C CNN
+F 4 "bom" H 6560 3180 50  0001 C CNN "BOM"
+	1    6560 4280
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6560 4810 6560 4580
+Wire Wire Line
+	6510 4580 6610 4580
+Connection ~ 6560 4580
+Wire Wire Line
+	6870 4810 6870 3150
+Connection ~ 6560 4810
+Connection ~ 3660 3650
+Wire Wire Line
+	2860 5020 4680 5020
+Wire Wire Line
+	4680 5020 4680 3450
+Wire Wire Line
+	4680 3450 4780 3450
+Connection ~ 2860 5020
+Wire Wire Line
+	4680 4500 6350 4500
+Wire Wire Line
+	6350 4500 6350 3450
+Wire Wire Line
+	6350 3450 6280 3450
+Connection ~ 4680 4500
+$Comp
+L Motor_Servo M3
+U 1 1 59E29295
+P 4400 1870
+F 0 "M3" H 4200 2045 50  0000 L CNN
+F 1 "Motor_Servo" H 4200 1710 50  0000 L TNN
+F 2 "" H 4400 1680 50  0001 C CNN
+F 3 "" H 4400 1680 50  0001 C CNN
+	1    4400 1870
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 1770 1960 1770
+Wire Wire Line
+	1960 1770 1960 3750
+Wire Wire Line
+	1960 3750 2260 3750
+Wire Wire Line
+	1780 1970 4100 1970
+Wire Wire Line
+	1780 1970 1780 5020
+Wire Wire Line
+	1780 5020 2760 5020
+Wire Wire Line
+	2760 5020 2760 4450
 $EndSCHEMATC
