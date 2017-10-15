@@ -33,6 +33,7 @@ Wires (Various) <br />
 Resistors (Various) <br />
 
 <b>Software:</b> <br />
-Arduino Programming Language
-KiCad
-SolidWorks
+Arduino Programming Language < br />
+Arduino IDE <br />
+KiCad <br />
+SolidWorks <br />
