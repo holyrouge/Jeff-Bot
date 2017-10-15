@@ -235,225 +235,170 @@ $EndComp
 $Comp
 L Motor_DC M1
 U 1 1 59DFF4C2
-P 5180 4860
-F 0 "M1" H 5280 4960 50  0000 L CNN
-F 1 "Motor_DC" H 5280 4660 50  0000 L TNN
-F 2 "" H 5180 4770 50  0001 C CNN
-F 3 "" H 5180 4770 50  0001 C CNN
-	1    5180 4860
+P 5070 4400
+F 0 "M1" V 5350 4280 50  0000 L CNN
+F 1 "Motor_DC" V 5400 4170 50  0000 L TNN
+F 2 "" H 5070 4310 50  0001 C CNN
+F 3 "" H 5070 4310 50  0001 C CNN
+	1    5070 4400
 	0    1    1    0   
 $EndComp
 $Comp
 L Motor_DC M2
 U 1 1 59DFF511
-P 6020 4840
-F 0 "M2" H 6120 4940 50  0000 L CNN
-F 1 "Motor_DC" H 6120 4640 50  0000 L TNN
-F 2 "" H 6020 4750 50  0001 C CNN
-F 3 "" H 6020 4750 50  0001 C CNN
-	1    6020 4840
+P 5930 4400
+F 0 "M2" V 6210 4310 50  0000 L CNN
+F 1 "Motor_DC" V 6250 4200 50  0000 L TNN
+F 2 "" H 5930 4310 50  0001 C CNN
+F 3 "" H 5930 4310 50  0001 C CNN
+	1    5930 4400
 	0    1    1    0   
 $EndComp
 $Comp
 L Arduino_UNO_R3 A1
 U 1 1 59E01BD5
 P 2760 3350
-F 0 "A1" H 2560 4400 50  0000 R CNN
-F 1 "Arduino_UNO_R3" H 2560 4300 50  0000 R CNN
+F 0 "A1" H 2290 4590 50  0000 R CNN
+F 1 "Arduino UNO R3" H 2560 4460 50  0000 R CNN
 F 2 "Modules:Arduino_UNO_R3" H 2910 2300 50  0001 L CNN
 F 3 "" H 2560 4400 50  0001 C CNN
 	1    2760 3350
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2960 2350 6280 2350
-Wire Wire Line
-	6280 2350 6280 3050
-Wire Wire Line
-	2260 4050 2260 4590
-Wire Wire Line
-	2260 4590 3450 4590
-Wire Wire Line
-	4260 3650 4780 3650
-Wire Wire Line
-	3520 3150 4780 3150
-Wire Wire Line
-	3450 4590 3450 3650
-Wire Wire Line
-	3450 3650 3660 3650
-Wire Wire Line
-	3520 3150 3520 3650
-Connection ~ 3520 3650
-Wire Wire Line
-	4780 3250 4560 3250
-Wire Wire Line
-	4560 3250 4560 4300
-Wire Wire Line
-	4560 4300 5390 4300
-Wire Wire Line
-	5390 4300 5390 4860
-Wire Wire Line
-	5390 4860 5380 4860
-Wire Wire Line
-	4600 3550 4600 4860
-Wire Wire Line
-	4600 4860 4880 4860
-Wire Wire Line
-	4600 3550 4780 3550
-Wire Wire Line
-	2260 3850 2160 3850
-Wire Wire Line
-	2160 3850 2160 4660
-Wire Wire Line
-	2160 4660 3610 4660
-Wire Wire Line
-	3610 4660 3610 3050
-Wire Wire Line
-	3610 3050 4780 3050
-Wire Wire Line
-	2260 3250 2080 3250
-Wire Wire Line
-	2080 4720 3670 4720
-Wire Wire Line
-	3670 4720 3670 4020
-Wire Wire Line
-	3670 4020 6360 4020
-Wire Wire Line
-	6360 4020 6360 3750
-Wire Wire Line
-	6360 3750 6280 3750
-Wire Wire Line
-	2080 3250 2080 4720
-Wire Wire Line
-	2260 3450 1980 3450
-Wire Wire Line
-	1980 3450 1980 4810
-Wire Wire Line
-	1980 4810 6870 4810
-Wire Wire Line
-	6870 3150 6280 3150
-Wire Wire Line
-	6560 3980 6560 3650
-Wire Wire Line
-	6560 3650 6280 3650
-Wire Wire Line
-	6280 3250 6440 3250
-Wire Wire Line
-	6440 3250 6440 4110
-Wire Wire Line
-	6440 4110 5720 4110
-Wire Wire Line
-	5720 4110 5720 4840
-Wire Wire Line
-	6280 3550 6490 3550
-Wire Wire Line
-	6490 3550 6490 4150
-Wire Wire Line
-	6490 4150 6220 4150
-Wire Wire Line
-	6220 4150 6220 4840
-Text Notes 7390 7500 0    60   ~ 12
-Arduino Connected to Motors Using a H-Bridge\n
+	5280 4400 5270 4400
+Text Notes 7340 7600 0    60   ~ 12
+SB Robot Design Team Internal Competition 2017 Circuit Design\n\n
 $Comp
 L +9V #PWR2
 U 1 1 59E05DE5
-P 4050 4820
-F 0 "#PWR2" H 4050 4670 50  0001 C CNN
-F 1 "+9V" H 4050 4960 50  0000 C CNN
-F 2 "" H 4050 4820 50  0001 C CNN
-F 3 "" H 4050 4820 50  0001 C CNN
-	1    4050 4820
+P 4060 4490
+F 0 "#PWR2" H 4060 4340 50  0001 C CNN
+F 1 "+9V" H 4060 4650 50  0000 C CNN
+F 2 "" H 4060 4490 50  0001 C CNN
+F 3 "" H 4060 4490 50  0001 C CNN
+	1    4060 4490
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	4780 3750 4050 3750
-Wire Wire Line
-	4050 3750 4050 4820
 $Comp
 L GND #PWR1
 U 1 1 59E10209
-P 2860 5060
-F 0 "#PWR1" H 2860 4810 50  0001 C CNN
-F 1 "GND" H 2860 4910 50  0000 C CNN
-F 2 "" H 2860 5060 50  0001 C CNN
-F 3 "" H 2860 5060 50  0001 C CNN
-	1    2860 5060
+P 3540 4570
+F 0 "#PWR1" H 3540 4320 50  0001 C CNN
+F 1 "GND" H 3540 4420 50  0000 C CNN
+F 2 "" H 3540 4570 50  0001 C CNN
+F 3 "" H 3540 4570 50  0001 C CNN
+	1    3540 4570
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2860 5060 2860 4450
+	3540 4570 3540 4530
 $Comp
 L NAND-Quad U1
 U 1 1 59E26706
-P 3960 3650
-F 0 "U1" H 3960 3950 50  0000 C CNN
-F 1 "NAND-Quad" H 3960 3850 50  0000 C CNN
-F 2 "footprint" H 3960 2750 50  0001 C CNN
-F 3 "datasheet" H 3960 2650 50  0001 C CNN
-F 4 "bom" H 3960 2550 50  0001 C CNN "BOM"
-	1    3960 3650
+P 3960 3590
+F 0 "U1" H 3960 3890 50  0000 C CNN
+F 1 "NAND-Quad" H 3960 3790 50  0000 C CNN
+F 2 "footprint" H 3960 2690 50  0001 C CNN
+F 3 "datasheet" H 3960 2590 50  0001 C CNN
+F 4 "bom" H 3960 2490 50  0001 C CNN "BOM"
+	1    3960 3590
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3660 3600 3660 3700
 $Comp
 L NAND-Quad U2
 U 1 1 59E26C1C
-P 6560 4280
-F 0 "U2" H 6560 4580 50  0000 C CNN
-F 1 "NAND-Quad" H 6560 4480 50  0000 C CNN
-F 2 "footprint" H 6560 3380 50  0001 C CNN
-F 3 "datasheet" H 6560 3280 50  0001 C CNN
-F 4 "bom" H 6560 3180 50  0001 C CNN "BOM"
-	1    6560 4280
-	0    -1   -1   0   
+P 7120 3590
+F 0 "U2" H 7120 3290 50  0000 C CNN
+F 1 "NAND-Quad" H 7120 3380 50  0000 C CNN
+F 2 "footprint" H 7120 2690 50  0001 C CNN
+F 3 "datasheet" H 7120 2590 50  0001 C CNN
+F 4 "bom" H 7120 2490 50  0001 C CNN "BOM"
+	1    7120 3590
+	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	6560 4810 6560 4580
-Wire Wire Line
-	6510 4580 6610 4580
-Connection ~ 6560 4580
-Wire Wire Line
-	6870 4810 6870 3150
-Connection ~ 6560 4810
-Connection ~ 3660 3650
-Wire Wire Line
-	2860 5020 4680 5020
-Wire Wire Line
-	4680 5020 4680 3450
-Wire Wire Line
-	4680 3450 4780 3450
-Connection ~ 2860 5020
-Wire Wire Line
-	4680 4500 6350 4500
-Wire Wire Line
-	6350 4500 6350 3450
-Wire Wire Line
-	6350 3450 6280 3450
-Connection ~ 4680 4500
+Connection ~ 3540 4530
 $Comp
 L Motor_Servo M3
 U 1 1 59E29295
-P 4400 1870
-F 0 "M3" H 4200 2045 50  0000 L CNN
-F 1 "Motor_Servo" H 4200 1710 50  0000 L TNN
-F 2 "" H 4400 1680 50  0001 C CNN
-F 3 "" H 4400 1680 50  0001 C CNN
-	1    4400 1870
+P 5520 2350
+F 0 "M3" H 5490 2120 50  0000 L CNN
+F 1 "Motor_Servo" H 5330 2070 50  0000 L TNN
+F 2 "" H 5520 2160 50  0001 C CNN
+F 3 "" H 5520 2160 50  0001 C CNN
+	1    5520 2350
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	4100 1770 1960 1770
-Wire Wire Line
-	1960 1770 1960 3750
-Wire Wire Line
-	1960 3750 2260 3750
-Wire Wire Line
-	1780 1970 4100 1970
-Wire Wire Line
-	1780 1970 1780 5020
-Wire Wire Line
-	1780 5020 2760 5020
-Wire Wire Line
-	2760 5020 2760 4450
+Text Label 2900 4650 1    60   ~ 0
+GND
+Text Label 4770 3490 2    60   ~ 0
+GND
+Text Label 6480 3490 2    60   ~ 0
+GND
+Text Label 4490 3690 0    60   ~ 0
+U1A_O
+Text Label 4270 3630 0    60   ~ 0
+2A
+Text Label 2790 4710 1    60   ~ 0
+M3_3
+Text Label 4870 2490 0    60   ~ 0
+A1_GND
+Text Label 5030 2290 0    60   ~ 0
+D10
+Text Label 2020 3780 0    60   ~ 0
+M3_1
+Text Label 1990 3890 0    60   ~ 0
+1,2EN
+Text Label 4600 3080 0    60   ~ 0
+D11
+Text Label 3010 2110 3    60   ~ 0
+VCC1
+Text Label 6300 3080 0    60   ~ 0
+A1_+5V
+Text Label 4590 3190 0    60   ~ 0
+D13
+Text Label 1870 4090 0    60   ~ 0
+1A,U1A_I
+Text Label 3470 3680 0    60   ~ 0
+D13
+Text Label 3470 3580 0    60   ~ 0
+D13
+Text Label 5290 4440 0    60   ~ 0
+1Y
+Text Label 4650 4440 0    60   ~ 0
+2Y
+Text Label 6140 4450 0    60   ~ 0
+3Y
+Text Label 5520 4440 0    60   ~ 0
+4Y
+Text Label 7550 3580 2    60   ~ 0
+D7
+Text Label 7550 3690 2    60   ~ 0
+D7
+Text Label 6290 3190 0    60   ~ 0
+D7
+Text Label 6290 3690 0    60   ~ 0
+U2A_O
+Text Label 6700 3630 0    60   ~ 0
+3A
+Text Label 4580 3800 0    60   ~ 0
++9V
+Text Label 4550 3290 0    60   ~ 0
+M1_1
+Text Label 4540 3590 0    60   ~ 0
+M1_2
+Text Label 6290 3590 0    60   ~ 0
+M2_1
+Text Label 6290 3290 0    60   ~ 0
+M2_2
+Text Label 6290 3800 0    60   ~ 0
+D5
+Text Label 1990 3300 0    60   ~ 0
+3,4EN
+Text Label 1870 3490 0    60   ~ 0
+4A,U2A_I
+Text Label 2700 2340 1    60   ~ 0
++9V
+Text Notes 8140 7640 0    60   ~ 0
+10/14/2017 11:34 PM
 $EndSCHEMATC
