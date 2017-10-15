@@ -1,6 +1,8 @@
-# SBU Internal Robotics Competition 2017
+# Stony Brook Robot Design Team Internal Robotics Competition 2017
 
-This repository contains the code and schematic diagrams for the making of a robot for the Stony Brook Robot Design Team Internal Competition 2017.
+# Introduction
+
+The objective of teams in the Stony Brook Robot Design Team Internal Robotics Competition 2017 is to develop a robot capable of remote control and autonomous operation. The robot has to navigate an arena containing three levels and a hidden (autonomous-only) level to collect blocks of varying shapes to be dropped off of goal areas of each of the three levels to gain points.
 
 <b>Team Members:</b> <br />
 Prangon Ghose (Team Lead) (Software, Electrical Teams) <br />
