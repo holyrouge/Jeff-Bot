@@ -13,7 +13,7 @@ Joseph Maalouf (Mechanical Team) <br />
 
 <b>Electrical Components:</b> <br />
 1 x EBL 600mAh 9 Volt Li-Ion Battery <br />
-2 x Hobby Gearmotor - 65 RPM (Right Angle) <br />
+2 x Hobby Gearmotor - 65 RPM (Straight) <br />
 2 x HC-SR04 Ultrasonic Module Distance Sensor <br />
 1 x RGB Color Sensor <br />
 1 x SN754410One H-Bridge - Motor Controller <br />
