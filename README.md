@@ -4,10 +4,10 @@ This repository contains the code and schematic diagrams for the making of a rob
 
 <b>Team Members:</b> <br />
 Prangon Ghose (Team Lead) (Software, Electrical Teams) <br />
-William Xiang (Software Team) <br />
 Andres Rodriguez (Software Team) <br />
+William Xiang (Software Team) <br />
 Manuel Carbajal (Electrical Team) <br />
-Conor Burbige (Electrical, Mechanical Teams) <br />
+Conor Burbige (Electrical Team) <br />
 Christian Zoni (Mechanical Team) <br />
 Joseph Maalouf (Mechanical Team) <br />
 
