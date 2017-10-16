@@ -15,14 +15,14 @@ Joseph Maalouf (Mechanical Subteam) <br />
 1 x EBL 600mAh 9 Volt Li-Ion Battery <br />
 2 x Hobby Gearmotor - 65 RPM (Straight) <br />
 2 x HC-SR04 Ultrasonic Module Distance Sensor <br />
-1 x RGB Color Sensor <br />
+1 x TCS34725 RGB Color Sensor <br />
 1 x SN754410One H-Bridge - Motor Controller <br />
 1 x CD4011AE NAND Gate <br />
 1 x Supporting Swivel Caster Wheel <br />
 1 x Arduino Uno R3 <br />
 2 x Xbee Module <br />
 2 x Xbee Module Headers <br />
-1 x Infrared Sensor <br />
+1 x 0A41SK Infrared Sensor <br />
 1 x FitTec Servo <br />
 1 x Breadboard <br />
 Capacitors (Various) <br />
