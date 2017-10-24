@@ -34,6 +34,7 @@ Resistors (Various) <br />
 
 <b>Software:</b> <br />
 Arduino Programming Language <br />
-Arduino IDE <br />
+CodeBlocks IDE <br />
+Arduino Builder <br />
 KiCad <br />
 SolidWorks <br />
