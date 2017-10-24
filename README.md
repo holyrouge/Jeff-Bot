@@ -34,6 +34,10 @@ Resistors (Various) <br />
 
 <b>Software:</b> <br />
 Arduino Programming Language <br />
-Arduino IDE <br />
+CodeBlocks IDE <br />
+Arduino Builder <br />
 KiCad <br />
 SolidWorks <br />
+
+How to download and setup CodeBlocks for Arduino IDE:
+https://docs.google.com/document/d/1LrjwI3s8wjDjS99e7RZ_IXSmKBwL815BkVHwAZ1Cj5I/edit?usp=sharing
