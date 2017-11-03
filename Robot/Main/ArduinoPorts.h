@@ -2,11 +2,11 @@
 #ifndef ArduinoPorts_h
 #define ArduinoPorts_h
 
-const int leftDirection = 2;
-const int leftSpeed = 4;
+const int leftDirection = 7;
+const int leftSpeed = 11;
 
-const int rightDirection = 9;
-const int rightSpeed = 7;
+const int rightDirection = 10;
+const int rightSpeed = 5;
 
 const int ultraSendPort = 1;
 const int ultraReceivePort = 1;
