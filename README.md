@@ -7,7 +7,6 @@ Prangon Ghose (Team Lead) (Software, Electrical Subteams) <br />
 Andres Rodriguez (Software Subteam) <br />
 William Xiang (Software Subteam) <br />
 Manuel Carbajal (Electrical Subteam) <br />
-Conor Burbige (Electrical Subteam) <br />
 Christian Zoni (Mechanical Subteam) <br />
 Joseph Maalouf (Mechanical Subteam) <br />
 
