@@ -12,7 +12,7 @@ const int ultraSendPort = 1;
 const int ultraReceivePort = 1;
 
 const int infraSendPort = 1;
-const int ifraReceivePort = 1;
+const int infraReceivePort = 1;
 
 const int colorSendPort = 1;
 const int colorReceivePort = 1;
