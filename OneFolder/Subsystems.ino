@@ -21,7 +21,7 @@
 long duration;
 double distance;
 
-void UltraOn(){
+void ultraOn(){
     pinMode(infraSendPort, OUTPUT);
     pinMode(infraReceivePort, INPUT);
     Serial.begin(9600);
