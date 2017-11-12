@@ -1,0 +1,41 @@
+Pin Layout
+
+H-Bridge/Motors
+
+Left:
+  Digital 7
+Right:
+  Digital 8
+  
+Servo
+  PWM: Digital 6
+  
+  
+Sensors
+
+Ultrasonics
+
+Front-top:
+  PWM: Digital 5
+  Digital 4
+Front-bottom:
+  PWM: Digital 3
+  Digital 2
+Right:
+  Supposed to be PWM (need to do manual PWM through code): Digital 17
+  Digital 16
+Left:
+  PWM: Digital 11
+  Digital 12
+  
+Infrared
+
+Left:
+  Analog 1
+Right:
+  Analog 0
+  
+Color
+  SCL 
+  SDA
+  
