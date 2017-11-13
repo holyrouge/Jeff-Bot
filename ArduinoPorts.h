@@ -16,10 +16,10 @@ const int ultraLeftReceivePort = 1;
 const int ultraFrontSendPort = 2;
 const int ultraFrontReceivePort = 3;
 
-const int infraRightSendPort = 1;
-const int infraRightReceivePort = 1;
-const int infraLeftReceivePort = 1;
-const int infraLeftSendPort = 1;
+//const int infraRightSendPort = 1;
+//const int infraRightReceivePort = 1;
+//const int infraLeftReceivePort = 1;
+//const int infraLeftSendPort = 1;
 
 const int colorSendPort = 1;
 const int colorReceivePort = 1;
