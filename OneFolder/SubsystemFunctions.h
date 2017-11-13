@@ -18,6 +18,11 @@ void turnRight(int speed);
 void turnLeft(int speed, double time);
 void turnRight(int speed, double time);
 
+void setLeftForwardSpeed(int speed);
+void setRightBackwardSpeed(int speed);
+void setLeftBackwardSpeed(int speed);
+void setRightForwardSpeed(int speed);
+
 //@Servo
 //everything can be done with myservo.write() :: takes in the amount of degrees you want
 
@@ -32,6 +37,6 @@ void infraGrab();
 
 //@UltraSensor
 void UltraOn();
-double ultraRead();
+double ultraGrab(int sendPort, int receivePort);
 
 #endif

@@ -10,11 +10,6 @@
  *infra
  */
 
-//@Xbee
-/*code for
- * xBee
- */
-
 //@Ultrasonic:
 
 // defines variables
@@ -22,21 +17,21 @@ long duration;
 double distance;
 
 void ultraOn(){
-    pinMode(infraSendPort, OUTPUT);
-    pinMode(infraReceivePort, INPUT);
+    pinMode(ultraFrontSendPort, OUTPUT);
+    pinMode(ultraFrontReceivePort, INPUT);
     Serial.begin(9600);
 }
 
-double ultraGrab(){
+double ultraGrab(int sendPort, int receivePort){
     // Clears the trigPin
-        digitalWrite(ultraSendPort, LOW);
+        digitalWrite(sendPort, LOW);
         delayMicroseconds(2);
     // Sets the trigPin on HIGH state for 10 micro seconds
-        digitalWrite(ultraSendPort, HIGH);
+        digitalWrite(sendPort, HIGH);
         delayMicroseconds(10);
-        digitalWrite(ultraSendPort, LOW);
+        digitalWrite(sendPort, LOW);
     // Reads the echoPin, returns the sound wave travel time in microseconds
-        duration = pulseIn(ultraReceivePort, HIGH);
+        duration = pulseIn(receivePort, HIGH);
     // Calculating the distance
         distance= duration*0.017; // 0.017 - speed of sound in millisecs
         return distance;
@@ -110,8 +105,23 @@ void turnRight(int speed, double time){
   stop();
   }
 
+void setLeftSpeedForward(int speed){
+  digitalWrite(leftDirection, 1);
+  analogWrite(leftSpeed, speed);
+}
+void setLeftSpeedBackward(int speed){
+  digitalWrite(leftDirection, 0);
+  analogWrite(leftSpeed, speed);
+}
 
-
+void setRightSpeedForward(int speed){
+  digitalWrite(rightDirection, 1);
+  analogWrite(rightSpeed, speed);
+}
+void setRightSpeedBackward(int speed){
+  digitalWrite(rightDirection, 0);
+  analogWrite(rightSpeed, speed);
+}
 
 
 //@ColorSensor:
@@ -123,7 +133,7 @@ void turnRight(int speed, double time){
 Adafruit_TCS34725 ColorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
 uint16_t Color[6] = {0,0,0,0,0,0};
 
-void ColorOpen() {
+void colorOpen() {
   Serial.begin(9600);
 
   while(ColorSensor.begin() == false){
