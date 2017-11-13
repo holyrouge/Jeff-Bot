@@ -65,6 +65,9 @@ void LOOP_RC(){
   
   }
 
-void LOOP_AUTO(){}
+void LOOP_AUTO(){
+  uint16_t * rgb = colorSet();
+  Serial.println(rgb[0]);
+  }
 
 
