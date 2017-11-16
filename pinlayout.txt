@@ -3,8 +3,10 @@ Pin Layout
 H-Bridge/Motors
 
 Left:
+  PWM: Digital 9
   Digital 7
 Right:
+  PWM: Digital 10
   Digital 8
   
 Servo
