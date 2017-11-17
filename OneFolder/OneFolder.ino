@@ -4,26 +4,48 @@
 #include <Servo.h>
 
 Servo myservo;
-
 const byte leftStick = 0x4C; // Hex byte that represents leftStick, xBee-wise
 const byte rightStick = 0x52; // Hex byte that represents rightStick, xBee-wise
 
-const int BLOCK_COLOR = 0; //color of block to get// 0 for red, 1 for blue
-//find experimentally, these are the "actual" colors
-const int COLORS[2][3] = {{255, 0, 0}, {0, 0, 255}};
 
-/* ROBOT STATES
+/*****************************************************************************************
+ * EXPERIMENTAL CONSTS
+ *****************************************************************************************/
+const int MAX_SPEED = 127;
+ 
+const int BLOCK_COLOR = 0; //color of block to return; 0 for red, 1 for blue
+const int COLORS[2][3] = {{255, 0, 0}, {0, 0, 255}}; //color sensor readings for blocks
+const double COLOR_THRESH = 25; //max euclidean dist btwn colors for there to be a match
+
+const int SERVO_OPEN = 0; //max degrees servo can open (or close?)
+const int SERVO_CLOSE = 180; //min degrees servo can close (or open?)
+
+const double DIST_THRESH = 3; //distance to stop before it detects a wall
+const double DIST_ERROR = 0.1; //horiz dist btwn top and bottom sensor
+//dist error for when it finds wall and bot sensor in front of top so it thinks it's block
+
+const double TIME_ONE_ROT = 1.0; //time in ms for robot to rotate a full circle
+const int FWD_THRESH = 5; //how long (in 0.1s intervals) to move forward in expl before rot
+const int ROT_THRESH = 7; //how long to rotate left and then right before fwd again
+/*****************************************************************************************/
+
+
+/***************************************************
+ *  ROBOT STATES AND VARS
+     * -1 -- STOP 
      *  0 -- exploratory (looking for blocks)
      *  1 -- grabbing block
      *  2 -- returning block
+     *  3 -- removing block from view
      *  4 -- navigating maze ???
-     *  -1 -- STOP
-*/
+***************************************************/
 int STATE = 0;
-
-int infra1 = 0, infra2 = 0;
-double infra_avg = 0.0;
-double ultra_top=0.0, ultra_bot=0.0, ultra_left=0.0, ultra_right=0.0;
+int NEXT_STATE = 0; //helper var for when grabbing block
+double infra_avg;
+double ultra_top, ultra_bot, ultra_left, ultra_right;
+bool HAS_BLOCK = false;
+int ROT_DIR = 0; //-1 for left, 0 for none, 1 for right
+int ROT_CTR = 0; //when exploring, keep ctr to know when to switch dir
 
     
 void setup() {
@@ -47,7 +69,6 @@ void loop() {
     LOOP_RC();
 }
 
-
 void LOOP_RC() {
     if (Serial.available() >= 4) {
         byte leftMag;
@@ -55,12 +76,11 @@ void LOOP_RC() {
         
         // for grabbing data
         byte raw_data[4];
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++)
             raw_data[i] = Serial.read();
-        } 
         
         // If we get out of sync realign data. Could also try Serial.flush()
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (raw_data[0] == 76 && raw_data[2] == 82) {
                 break;
             }
@@ -83,7 +103,6 @@ void LOOP_RC() {
             leftMag -= 126;  
             setLeftBackwardSpeed(leftMag);
         }
-
         if (rightMag >= 0 && rightMag <= 127) {
             setRightForwardSpeed(rightMag);
         }
@@ -96,62 +115,78 @@ void LOOP_RC() {
 
 
 void LOOP_AUTO() {     
-    infra1 = infraGrab(A0);
-    infra2 = infraGrab(A1);
-    infra_avg = infra1 + infra2 / 2.0;
-
+    infra_avg = infraGrab(A0) + infraGrab(A1) / 2.0;
     ultra_top = ultraGrab(4, 5);
     ultra_bot = ultraGrab(2, 3);
     ultra_left = ultraGrab(12, 11);
-    ultra_right = ultraGrab(17, 16);
-
+    ultra_right = ultraGrab(16, 17);
 
     switch(STATE) {
         case -1:
-            break;
+            stop();
         case 0:
             STATE_explore();
-            break;
         case 1:
-            break;
+            STATE_grab();
         case 2:
-            break;
+            STATE_return();
         case 3:
-            break;
+            STATE_remove();
         default:
             break;
     }
-    //timers  
-}
-
-//given 2 RGB arrays, see if they're close enough to match
-boolean similarColor(int * c1, int * c2) {
-    int color_threshold = 25;
-    return sqrt( pow(c1[0] - c2[0], 2) + pow(c1[1] - c2[1], 2) + pow(c1[2] - c2[2], 2) ) < color_threshold;
 }
 
 
 void STATE_explore() {
-    double distance_threshold = 3;
-    double distance_error = 0.1; //horiz dist btwn top and bottom sensor
-    //distance error accounts for when bot hits wall and bot sensor is slightly in front of top
-
     //check if there's something in the way of bottom ultra sensor
-    if (ultra_bot < distance_threshold) {
-        if (ultra_top < distance_threshold + distance_error) { //just hit a wall!
+    if (ultra_bot < DIST_THRESH) {
+        if (ultra_top < DIST_THRESH + DIST_ERROR) { //just hit a wall!
             //do something when u hit el wallo
         }
         else { //found a block!
+            STATE = 1; //change to grabbing block mode
+            
             //now check that the block is ours...
             uint16_t * rgb = colorSet();
-            if ( similarColor(rgb, COLORS[BLOCK_COLOR]) ) { //our colored block
-                Serial.println("Block found!");
-                STATE = 1; //change to grabbing block mode
+            if (sqrt(pow(COLORS[BLOCK_COLOR][0]-rgb[0],2)+pow(COLORS[BLOCK_COLOR][1]-rgb[1],2)+pow(COLORS[BLOCK_COLOR][2]-rgb[2],2))<COLOR_THRESH) {
+                Serial.println("Our Block found!");
+                NEXT_STATE = 2; //next state should be to return block
             }
             else { //opponent colored block
-                //either pick it up, turn 180, put it down, turn 180, and keep going
-                //or just keep going
+                //pick it up, turn 180, put it down, turn 180, and keep going
+                Serial.println("Opp. Block found!");
+                NEXT_STATE = 3;
             }
+        }
+    }
+
+    //if block wasn't found, start exploring
+    if (STATE == 0)
+        switch(ROT_DIR) {
+            case 0:
+                moveForwardFullSpeed(0.1);
+                ROT_CTR++;
+                if (ROT_CTR >= FWD_THRESH) {
+                    ROT_DIR = -1;
+                    ROT_CTR = 0;
+                }
+            case -1:
+                turnLeft(127, 0.1);
+                ROT_CTR++;
+                if (ROT_CTR >= ROT_THRESH) {
+                    ROT_DIR = 1;
+                    ROT_CTR = 0;
+                }
+            case 1:
+                turnRight(127, 0.1);
+                ROT_CTR++;
+                if (ROT_CTR >= ROT_THRESH) {
+                    ROT_DIR = 0;
+                    ROT_CTR = 0;
+                }
+            default:
+                break;
         }
     }
 }
@@ -168,10 +203,35 @@ void STATE_grab() {
         moveForwardFullSpeed(0.1);
     }
     else { //in range to pick up block
-        myservo.write(180); //is it 180 tho????
+        myservo.write(SERVO_CLOSE);
+        HAS_BLOCK = true;
+        if (NEXT_STATE == 2 || NEXT_STATE == 3) {
+            STATE = NEXT_STATE;
+        }
     }
 }
 
 void STATE_return() {
-
+    //algo resembles looking for a toilet when u needa shit
+    /*
+    NEXT_STATE = 1;
+    if (ultra_bot < DIST_THRESH) {
+        if (ultra_top < DIST_THRESH + DIST_ERROR) { //just hit a wall
+            //turn6
+        }
+    }
+    */
 }
+
+void STATE_remove() {
+    turnLeft(MAX_SPEED, TIME_ONE_ROT/2);
+    myservo.write(SERVO_OPEN);
+    HAS_BLOCK = false;
+    turnRight(MAX_SPEED, TIME_ONE_ROT/2);
+}
+
+
+
+
+
+
