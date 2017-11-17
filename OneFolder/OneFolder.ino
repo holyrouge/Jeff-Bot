@@ -26,8 +26,6 @@ void setup()
 void loop()
 {
     LOOP_RC();
-    moveBackward(50, 3000); //runs for three seconds
-    delay(3000); // waits for three seconds before looping :D
 }
 
 void LOOP_RC(){
