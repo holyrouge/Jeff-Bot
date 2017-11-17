@@ -31,38 +31,50 @@ void loop()
 }
 
 void LOOP_RC(){
+    if (Serial.available() >= 4){
     byte leftMag;
     byte rightMag;
-
-    //grabs byte from Serial/Xbee
-    byte currentStick = Serial.read();
-
-   //if the byte is of value 4C, the next byte will be a magnitude for the stick
-   if (currentStick == leftStick){
-      leftMag = Serial.read();
-   }
-   //same for the right
-   else if(currentStick == rightStick){
-      rightMag = Serial.read();
-   }
-
+   //                                     for grabing data                                          //   
+    byte raw_data[4];
+  for(int i = 0; i < 4; i++) {
+    raw_data[i] = Serial.read();
+  }
+      // If we get out of sync realign data. Could also try Serial.flush()
+  for(int i = 0; i < 4; i++) {
+    if(raw_data[0] == 76 && raw_data[2] == 82) {
+      break;
+    }
+  byte temp = raw_data[0];
+    raw_data[0] = raw_data[1];
+    raw_data[1] = raw_data[2];
+    raw_data[2] = raw_data[3];
+    raw_data[3] = temp;
+  
+  }
+      
+ //                                      for magnitudes                                             //
+leftMag = raw_data[1];
+rightMag = raw_data[3];
+  
   //designed as a two stick drive system
   if (leftMag >= 0 && leftMag <= 127){
       setLeftSpeedForward(leftMag);
   }
   else if (leftMag > 127 && leftMag <= 255){
-      setLeftSpeedBackward(leftMag);
+    leftMag -= 126;  
+    setLeftSpeedBackward(leftMag);
   }
 
   if (rightMag >= 0 && rightMag <= 127){
       setRightSpeedForward(rightMag);
   }
   else if (rightMag >= 127 && rightMag <= 255){
+      rightMag -= 126;
       setRightSpeedBackward(rightMag);
   }
 
   
-  
+    }
   }
 
 void LOOP_AUTO(){
