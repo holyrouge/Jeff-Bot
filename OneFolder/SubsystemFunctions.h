@@ -28,15 +28,15 @@ void setRightForwardSpeed(int speed);
 
 
 //@ColorSensor
-void ColorOpen();
+void colorOpen();
 uint16_t * colorSet();
 
 //@InfraSensor
-void InfraOn();
-void infraGrab();
+void infraOn();
+int infraGrab(int receivePort);
 
 //@UltraSensor
-void UltraOn();
+void ultraOn();
 double ultraGrab(int sendPort, int receivePort);
 
 #endif

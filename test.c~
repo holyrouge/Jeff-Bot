@@ -1,0 +1,38 @@
+#include <cstdlib>
+
+/*
+void LOOP_AUTO() {
+    int infra1 = infraGrab(A0);
+    int infra2 = infraGrab(A1);
+    double infra_avg = infra1 + infra2 / 2.0;
+
+    int ultra_top = ultraGrab(4, 5);
+    int ultra_bot = ultraGrab(2, 3);
+    int ultra_left = ultraGrab(12, 11);
+    int ultra_right = ultraGrab(17, 16);
+
+    //check if there's a block
+    int distance_threshold = 3;
+    if (ultra_bot < distance_threshold) { 
+        uint16_t * rgb = colorSet();
+        Serial.println(rgb[0]);
+
+        //find experimentally
+        int red[3] = {255, 0, 0};
+        int blue[3] = {0, 0, 255};
+    }  
+}
+*/
+
+//given 2 RGB arrays, see if they're close enough to match
+bool compareColors(int* c1, int* c2) {
+    int color_threshold = 25;
+    return sqrt( pow(c1[0] - c2[0], 2) + pow(c1[1] - c2[1], 2) + pow(c1[2] - c2[2], 2) ) < color_threshold;
+}
+
+void setup() {
+    //testing
+    int color1[3] = {255, 0, 0};
+    int color2[3] = {254, 0, 0};
+    printf(compareColors(color1, color2));
+}

@@ -1,14 +1,18 @@
 #include <Wire.h>
 #include <Arduino.h>
+#include <Servo.h>
 #include "Adafruit_TCS34725.h"
 #include "ArduinoPorts.h"
-#include <Servo.h>
 #include "SubsystemFunctions.h"
 
 //@Infrared
-/*code for 
- *infra
- */
+void infraOn() {
+}
+
+int infraGrab(int receivePort) {
+  return 0;
+}
+
 
 //@Ultrasonic:
 
@@ -16,13 +20,13 @@
 long duration;
 double distance;
 
-void ultraOn(){
+void ultraOn() {
     pinMode(ultraFrontSendPort, OUTPUT);
     pinMode(ultraFrontReceivePort, INPUT);
     Serial.begin(9600);
 }
 
-double ultraGrab(int sendPort, int receivePort){
+double ultraGrab(int sendPort, int receivePort) {
     // Clears the trigPin
         digitalWrite(sendPort, LOW);
         delayMicroseconds(2);
@@ -33,7 +37,7 @@ double ultraGrab(int sendPort, int receivePort){
     // Reads the echoPin, returns the sound wave travel time in microseconds
         duration = pulseIn(receivePort, HIGH);
     // Calculating the distance
-        distance= duration*0.017; // 0.017 - speed of sound in millisecs
+        distance = duration*0.017; // 0.017 - speed of sound in millisecs
         return distance;
 }
 
@@ -46,12 +50,12 @@ double ultraGrab(int sendPort, int receivePort){
 
 //@RobotDrive:
 
-void stop(){
+void stop() {
     analogWrite(rightSpeed, 0);
     analogWrite(leftSpeed, 0);
 }
 
-void moveForward(int speed){
+void moveForward(int speed) {
   digitalWrite(rightDirection, 1);
   analogWrite(rightSpeed, speed);
 
@@ -59,66 +63,75 @@ void moveForward(int speed){
   analogWrite(leftSpeed, speed);
 }
 
-void moveForward(int speed, double time){
+void moveForward(int speed, double time) { 
   moveForward(speed);
   delay(time);
   stop();
-  }
-void moveForwardFullSpeed(double time){
+}
+
+void moveForwardFullSpeed(double time) {
     moveForward(255, time);
 }
-void moveBackward(int speed){
+
+void moveBackward(int speed) {
   digitalWrite(rightDirection, 0);
   analogWrite(rightSpeed, speed);
   digitalWrite(leftDirection, 0);
   analogWrite(leftSpeed, speed);
 }
-void moveBackward(int speed, double time){
+
+void moveBackward(int speed, double time) {
   moveBackward(speed);
   delay(time);
   stop();
-  }
-void moveBackwardFullSpeed(double time){
+}
+
+void moveBackwardFullSpeed(double time) {
     moveBackward(255, time);
 }
 
-void turnLeft(int speed){
+void turnLeft(int speed) {
   digitalWrite(rightDirection, 0);
   analogWrite(rightSpeed, speed);
   digitalWrite(leftDirection, 1);
   analogWrite(leftSpeed, speed);
 }
-void turnLeft(int speedLeft, double time){
+
+void turnLeft(int speedLeft, double time) {
   turnLeft(speedLeft);
   delay(time);
   stop();
-  }
-void turnRight(int speed){
+}
+
+void turnRight(int speed) {
   digitalWrite(rightDirection, 1);
   analogWrite(rightSpeed, speed);
   digitalWrite(leftDirection, 0);
   analogWrite(leftSpeed, speed);
 }
-void turnRight(int speed, double time){
+
+void turnRight(int speed, double time) {
   turnRight(speed);
   delay(time);
   stop();
-  }
+}
 
-void setLeftSpeedForward(int speed){
+void setLeftForwardSpeed(int speed) {
   digitalWrite(leftDirection, 1);
   analogWrite(leftSpeed, speed);
 }
-void setLeftSpeedBackward(int speed){
+
+void setLeftBackwardSpeed(int speed) {
   digitalWrite(leftDirection, 0);
   analogWrite(leftSpeed, speed);
 }
 
-void setRightSpeedForward(int speed){
+void setRightForwardSpeed(int speed) {
   digitalWrite(rightDirection, 1);
   analogWrite(rightSpeed, speed);
 }
-void setRightSpeedBackward(int speed){
+
+void setRightBackwardSpeed(int speed) {
   digitalWrite(rightDirection, 0);
   analogWrite(rightSpeed, speed);
 }
@@ -126,27 +139,25 @@ void setRightSpeedBackward(int speed){
 
 //@ColorSensor:
 
-/* Initialise with default values (int time = 2.4ms, gain = 1x) */
+// Initialise with default values (int time = 2.4ms, gain = 1x)
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 
-/* Initialise with specific int time and gain values */
+// Initialise with specific int time and gain values
 Adafruit_TCS34725 ColorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
 uint16_t Color[6] = {0,0,0,0,0,0};
 
 void colorOpen() {
   Serial.begin(9600);
-
-  while(ColorSensor.begin() == false){
+  while(ColorSensor.begin() == false) {
     Serial.print("Color Sensor Not Found");
-    if (ColorSensor.begin())
+    if (ColorSensor.begin()) {
         break;
-
+    }
   }
-
   // Now we're ready to get readings!
 }
 
-uint16_t * ColorSet() {
+uint16_t * colorSet() {
   ColorSensor.getRawData(&Color[0], &Color[1], &Color[2], &Color[3]);
 
   Color[4] = ColorSensor.calculateColorTemperature(Color[0], Color[1], Color[2]);
@@ -162,10 +173,7 @@ uint16_t * ColorSet() {
   Serial.print("C: "); Serial.print(c, DEC); Serial.print(" ");
   Serial.println(" ");
   */
-
   return Color;
 }
-
-
 
 
