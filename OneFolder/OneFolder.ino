@@ -18,7 +18,7 @@ const int COLORS[2][3] = {{255, 0, 0}, {0, 0, 255}};
      *  2 -- returning block
      *  4 -- navigating maze ???
      *  -1 -- STOP
-     */
+*/
 int STATE = 0;
 
 int infra1 = 0, infra2 = 0;
@@ -49,51 +49,49 @@ void loop() {
 
 
 void LOOP_RC() {
-    if (Serial.available() >= 4){
-    byte leftMag;
-    byte rightMag;
-   //                                     for grabing data                                          //   
-    byte raw_data[4];
-  for(int i = 0; i < 4; i++) {
-    raw_data[i] = Serial.read();
-  }
-      // If we get out of sync realign data. Could also try Serial.flush()
-  for(int i = 0; i < 4; i++) {
-    if(raw_data[0] == 76 && raw_data[2] == 82) {
-      break;
-    }
-  byte temp = raw_data[0];
-    raw_data[0] = raw_data[1];
-    raw_data[1] = raw_data[2];
-    raw_data[2] = raw_data[3];
-    raw_data[3] = temp;
-  
-  }
+    if (Serial.available() >= 4) {
+        byte leftMag;
+        byte rightMag;
+        
+        // for grabbing data
+        byte raw_data[4];
+        for(int i = 0; i < 4; i++) {
+            raw_data[i] = Serial.read();
+        } 
+        
+        // If we get out of sync realign data. Could also try Serial.flush()
+        for(int i = 0; i < 4; i++) {
+            if (raw_data[0] == 76 && raw_data[2] == 82) {
+                break;
+            }
+            byte temp = raw_data[0];
+            raw_data[0] = raw_data[1];
+            raw_data[1] = raw_data[2];
+            raw_data[2] = raw_data[3];
+            raw_data[3] = temp;  
+        }
       
- //                                      for magnitudes                                             //
-leftMag = raw_data[1];
-rightMag = raw_data[3];
+        // for magnitudes
+        leftMag = raw_data[1];
+        rightMag = raw_data[3];
   
-  //designed as a two stick drive system
-  if (leftMag >= 0 && leftMag <= 127){
-      setLeftSpeedForward(leftMag);
-  }
-  else if (leftMag > 127 && leftMag <= 255){
-    leftMag -= 126;  
-    setLeftSpeedBackward(leftMag);
-  }
+        //designed as a two stick drive system
+        if (leftMag >= 0 && leftMag <= 127) {
+            setLeftForwardSpeed(leftMag);
+        }
+        else if (leftMag > 127 && leftMag <= 255) {
+            leftMag -= 126;  
+            setLeftBackwardSpeed(leftMag);
+        }
 
-  if (rightMag >= 0 && rightMag <= 127){
-      setRightSpeedForward(rightMag);
-  }
-  else if (rightMag >= 127 && rightMag <= 255){
-      rightMag -= 126;
-      setRightSpeedBackward(rightMag);
-  }
-
-  
+        if (rightMag >= 0 && rightMag <= 127) {
+            setRightForwardSpeed(rightMag);
+        }
+        else if (rightMag >= 127 && rightMag <= 255) {
+            rightMag -= 126;
+            setRightBackwardSpeed(rightMag);
+        }
     }
-
 }
 
 
