@@ -24,6 +24,10 @@ int infraGrab(int receivePort) {
   }
 }
 
+int infraGrab() { //change this
+    return 0;
+}
+
 
 //@Ultrasonic:
 

@@ -3,7 +3,7 @@
 #include "SubsystemFunctions.h"
 #include <Servo.h>
 
-Servo myservo;
+//Servo myservo;
 const byte leftStick = 0x4C; // Hex byte that represents leftStick, xBee-wise
 const byte rightStick = 0x52; // Hex byte that represents rightStick, xBee-wise
 
@@ -29,6 +29,7 @@ const byte Back = 32;
 const byte MAX_SPEED = 127;
 
 const byte OUR_COLOR = 0; //color of block to return; 0 for red, 1 for blue
+//Goal zone color????????
 const int COLORS[2][3] = {{255, 0, 0}, {0, 0, 255}}; //color sensor readings for blocks
 const double COLOR_THRESH = 25; //max euclidean dist btwn colors for there to be a match
 const byte INFRA_THRESH = 17; // < 17 = white, > 17 = snicker's bar; assuming infra does in fact go from 4-30
@@ -47,6 +48,13 @@ const double TIME_ONE_ROT = 1.0; //time in ms for robot to rotate a full circle
 const byte FWD_THRESH = 5; //how long (in 0.1s intervals) to move forward in expl before rot
 const byte ROT_THRESH = 7; //how long to rotate left and then right before fwd again
 const double L3R_THRESH = 0.1;
+
+const double FORK_TIME_FWD = 1.0; //when reach fork, move this amt of time fwd
+const double FORK_TIME_ROT = 0.5; //how long to rot after mv fwd (examine blocks here)
+
+const byte REORIENT_STEP = 32;
+const double REORIENT_TIME_BK = 0.3;
+const double REORIENT_TIME_BK2 = 0.2;
 /*****************************************************************************************/
 
 
@@ -58,11 +66,12 @@ const double L3R_THRESH = 0.1;
         2 -- grab_block
         3 -- return_block
         4 -- remove_block (from line)
-        5 -- navigating maze ???
+        5 -- fork
+        6 -- maze ????
 ***************************************************/
 byte STATE = 0;
 byte NEXT_STATE = 0; //helper var for when grabbing block
-double infra_avg;
+double infra;
 double lr_infra[4]; //for determining if reached fork, 2 for left and right rot
 double ultra_top, ultra_bot, ultra_left, ultra_right;
 double l3r_left[3], l3r_right[3];
@@ -70,14 +79,13 @@ bool HAS_BLOCK = false;
 byte ROT_DIR = 0; //-1 for left, 0 for none, 1 for right
 byte ROT_CTR = 0; //when exploring, keep ctr to know when to switch dir
 
-
 void setup() {
 	Serial.begin(9600);
 	pinMode(leftSpeed, OUTPUT);
 	pinMode(rightDirection, OUTPUT);
 	pinMode(rightSpeed, OUTPUT);
 	pinMode(leftDirection, OUTPUT);
-	myservo.attach(clawPort);
+	//myservo.attach(clawPort);
 	pinMode(13, OUTPUT);
 	colorOpen();
 	ultraOn();
@@ -177,9 +185,8 @@ void LOOP_RC() {
 	}
 }
 
-
 void LOOP_AUTO() {
-	infra_avg = infraGrab(A0) + infraGrab(A1) / 2.0;
+	infra = infraGrab();
 	ultra_top = ultraGrab(4, 5);
 	ultra_bot = ultraGrab(2, 3);
 	ultra_left = ultraGrab(12, 11);
@@ -211,7 +218,7 @@ void STATE_findLine() { //state 0
 	moveForwardFullSpeed(1.0); //to get out of that black crossroads part
 
 	//if we just found the line
-	if (infra_avg > INFRA_THRESH) {
+	if (infra > INFRA_THRESH) {
 		if (ROT_CTR != 0) { //if line was found by rotating, rotate more for good measure
 			if (ROT_DIR == -1)
 				turnLeft(MAX_SPEED, SAFE_ROT_TIME);
@@ -227,15 +234,15 @@ void STATE_findLine() { //state 0
 	int left_trend = findTrend(l3r_left);
 	int right_trend = findTrend(l3r_right);
 	if (left_trend > 0 && right_trend < 0) { //means facing slightly right
-		while (infra_avg < INFRA_THRESH) {
+		while (infra < INFRA_THRESH) {
 			turnLeft(MAX_SPEED, SAFE_ROT_TIME * 5);
-			infra_avg = infraGrab(A0) + infraGrab(A1) / 2.0;
+			infra = infraGrab();
 		}
 	}
 	else if (right_trend > 0 && left_trend < 0) { //facing slightly left
-		while (infra_avg < INFRA_THRESH) {
+		while (infra < INFRA_THRESH) {
 			turnRight(MAX_SPEED, SAFE_ROT_TIME * 5);
-			infra_avg = infraGrab(A0) + infraGrab(A1) / 2.0;
+			infra = infraGrab();
 		}
 	}
 	else {
@@ -260,21 +267,68 @@ void STATE_findLine() { //state 0
 	}
 }
 
+void STATE_fork() { //state 5
+    moveForwardFullSpeed(FORK_TIME_FWD);
+    turnLeft(FORK_TIME_ROT);
+    STATE = 2; //change to grabbing block mode
+
+    //now check that the block is ours...
+    uint16_t * rgb = colorSet();
+    if (similarColors(rgb, COLORS[OUR_COLOR])) {
+        Serial.println("Our Block found!");
+        //maybe sabotage the other teams block first   *************************************            
+        NEXT_STATE = 3; //next state should be to return block
+        return;
+    }
+    else { //opponent colored block
+        Serial.println("Opp. Block found!");
+        turnRight(2 * FORK_TIME_ROT);
+        //should now be facing our block, so check again
+        rgb = colorSet();
+        if (similarColors(rgb, COLORS[OUR_COLOR])) {
+            NEXT_STATE = 3;
+            return;
+        }
+        else { //our block was probably moved, let's go on our merry way
+            
+        }
+        //NEXT_STATE = 4; ************************************************
+    }
+}
+
+void reorient() { //use when robot on line, but want to be dead centered
+    //move back a bit, esp. if near fork
+    moveBackwardFullSpeed(REORIENT_TIME_BK);
+    for (int i = 0; i < REORIENT_STEP; i++) {
+        turnRight(TIME_ONE_ROT / REORIENT_STEP);
+        infra = infraGrab();
+        if (i >= 1 && infra > INFRA_THRESH) { //first black found 2nd time
+            if (i < 8) {
+                turnLeft((i+1) * TIME_ONE_ROT / 16);
+            } else {
+                turnRight((15-i) * TIME_ONE_ROT / 16);
+            }
+            moveBackwardFullSpeed(REORIENT_TIME_BK2);
+            
+        }
+    }
+}
 
 void STATE_findBlock() { //state 1
 	//check if wandered off line
-	if (infra_avg < INFRA_THRESH) {
+	if (infra < INFRA_THRESH) {
 		if (isFork()) {
-			//go forward a set amount
+			STATE = 5;
+            return;
 		}
 		else {
-			STATE = 0;
+			STATE = 0; //find line again
 			return;
 		}
 	}
 
-	//check if there's something in the way of bottom ultra sensor
-	//should at least be on the line by now
+    //check if there's something in the way of bottom ultra sensor
+    //should at least be on the line by now
 	if (ultra_bot < DIST_THRESH) {
 		if (ultra_top < DIST_THRESH + DIST_ERROR) { //just hit a wall!
 			if (ultra_left < DIST_THRESH) {
@@ -331,7 +385,6 @@ void STATE_findBlock() { //state 1
 	}
 }
 
-
 void STATE_grab() { //state 2
 	//assume block is in straight line front of robot
 	if (ultra_bot > DIST_SLOW) {
@@ -341,7 +394,7 @@ void STATE_grab() { //state 2
 		moveForwardFullSpeed(0.1);
 	}
 	else { //in range to pick up block
-		myservo.write(SERVO_CLOSE);
+		setServo(SERVO_CLOSE);
 		HAS_BLOCK = true;
 		if (NEXT_STATE == 3 || NEXT_STATE == 4) {
 			STATE = NEXT_STATE;
@@ -364,11 +417,10 @@ void STATE_return() { //state 3
 
 void STATE_remove() { //state 4
 	turnLeft(MAX_SPEED, TIME_ONE_ROT / 4);
-	myservo.write(SERVO_OPEN);
+	setServo(SERVO_OPEN);
 	HAS_BLOCK = false;
 	turnRight(MAX_SPEED, TIME_ONE_ROT / 4);
 }
-
 
 void STATE_maze() { //state 5
 	Serial.println("xddddddd");
@@ -397,13 +449,13 @@ int findTrend(double* arr) {
 void infraMeasureCircle() {
 	//helpful readings to determine if we reached a fork
 	turnLeft(MAX_SPEED, TIME_ONE_ROT / 8);
-	lr_infra[0] = infraGrab(A0) + infraGrab(A1) / 2.0;
+	lr_infra[0] = infraGrab();
 	turnLeft(MAX_SPEED, TIME_ONE_ROT / 8);
-	lr_infra[1] = infraGrab(A0) + infraGrab(A1) / 2.0;
+	lr_infra[1] = infraGrab();
 	turnRight(MAX_SPEED, 3 * TIME_ONE_ROT / 8);
-	lr_infra[2] = infraGrab(A0) + infraGrab(A1) / 2.0;
+	lr_infra[2] = infraGrab();
 	turnRight(MAX_SPEED, TIME_ONE_ROT / 8);
-	lr_infra[3] = infraGrab(A0) + infraGrab(A1) / 2.0;
+	lr_infra[3] = infraGrab();
 	turnLeft(MAX_SPEED, TIME_ONE_ROT / 4);
 }
 
