@@ -7,11 +7,21 @@
 
 //@Infrared
 void infraOn() {
-    
+    pinMode(infraLeftSendPort, OUTPUT);
+    pinMode(infraLeftReceivePort, INPUT);
+    pinMode(infraRightSendPort, OUTPUT);
+    pinMode(infraRightReceivePort, INPUT);
 }
 
 int infraGrab(int receivePort) {
-    return 0;
+     // 5v
+  float volts = analogRead(receivePort)*0.0048828125;  // value from sensor * (5/1024)
+  int distance = 13/volts; // worked out from datasheet graph
+  delay(1000); // slow down serial port 
+  
+  if (distance <= 30){
+   return distance;   // print the distance
+  }
 }
 
 
@@ -24,7 +34,12 @@ double distance;
 void ultraOn() {
     pinMode(ultraFrontSendPort, OUTPUT);
     pinMode(ultraFrontReceivePort, INPUT);
-    Serial.begin(9600);
+    pinMode(ultraRightSendPort, OUTPUT);
+    pinMode(ultraRightReceivePort,INPUT); 
+    pinMode(ultraLeftSendPort, OUTPUT);
+    pinMode(ultraLeftReceivePort,INPUT);
+    pinMode(ultraBackSendPort, OUTPUT);
+    pinMode(ultraBackReceivePort,INPUT);
 }
 
 double ultraGrab(int sendPort, int receivePort) {
@@ -45,6 +60,15 @@ double ultraGrab(int sendPort, int receivePort) {
 
 
 //@Servo:
+void setServo(int degrees){
+  // (0)- 0 degrees, (1)- 180 degrees
+  double microsecs = ((degrees/180) + 1) * 1000;
+  
+  digitalWrite(clawPort, HIGH);
+  delayMicroseconds(microsecs);
+  digitalWrite(clawPort, HIGH);
+  delayMicroseconds(20000-microsecs);
+  }
 //everything can be done with myservo.write() :: takes in the amount of degrees you want
 
 
@@ -148,7 +172,6 @@ Adafruit_TCS34725 ColorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS
 uint16_t Color[6] = {0,0,0,0,0,0};
 
 void colorOpen() {
-    Serial.begin(9600);
     while(ColorSensor.begin() == false) {
         Serial.print("Color Sensor Not Found");
         if (ColorSensor.begin()) {
