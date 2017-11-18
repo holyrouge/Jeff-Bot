@@ -8,7 +8,6 @@ const int leftSpeed = 10;
 const int rightDirection = 7;
 const int rightSpeed = 9;
 
-
 const int ultraRightSendPort = 1;
 const int ultraRightReceivePort = 1;
 const int ultraLeftSendPort = 1;
