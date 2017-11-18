@@ -24,7 +24,7 @@ Front-bottom:
   PWM: Digital 3
   Digital 2
 Right:
-  PWM: Digital 6
+  PWM: Digital 17
   Digital 16
 Left:
   PWM: Digital 11
