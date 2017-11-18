@@ -100,6 +100,8 @@ void setup() {
 	colorOpen();
 	ultraOn();
 
+    digitalWrite(leftSpeed, 0);
+    digitalWrite(rightSpeed, 0);
 	//testing
 	int color1[3] = {255, 0, 0};
 	int color2[3] = {254, 0, 0};
@@ -107,7 +109,8 @@ void setup() {
 }
 
 void loop() {
-	LOOP_RC();
+	ultra_left = ultraGrab(ultraTopSendPort, ultraTopReceivePort);
+    Serial.println("ultra top: " + (String)ultra_top);
 }
 
 void LOOP_RC() {

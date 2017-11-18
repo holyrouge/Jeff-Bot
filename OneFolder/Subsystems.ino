@@ -7,10 +7,12 @@
 
 //@Infrared
 void infraOn() {
+    /*
     pinMode(infraLeftSendPort, OUTPUT);
     pinMode(infraLeftReceivePort, INPUT);
     pinMode(infraRightSendPort, OUTPUT);
     pinMode(infraRightReceivePort, INPUT);
+    */
 }
 
 int infraGrab(int receivePort) {
@@ -36,14 +38,14 @@ long duration;
 double distance;
 
 void ultraOn() {
-    pinMode(ultraFrontSendPort, OUTPUT);
-    pinMode(ultraFrontReceivePort, INPUT);
+    pinMode(ultraTopSendPort, OUTPUT);
+    pinMode(ultraTopReceivePort, INPUT);
     pinMode(ultraRightSendPort, OUTPUT);
     pinMode(ultraRightReceivePort,INPUT); 
     pinMode(ultraLeftSendPort, OUTPUT);
     pinMode(ultraLeftReceivePort,INPUT);
-    pinMode(ultraBackSendPort, OUTPUT);
-    pinMode(ultraBackReceivePort,INPUT);
+    pinMode(ultraBotSendPort, OUTPUT);
+    pinMode(ultraBotReceivePort,INPUT);
 }
 
 double ultraGrab(int sendPort, int receivePort) {
@@ -176,12 +178,14 @@ Adafruit_TCS34725 ColorSensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS
 uint16_t Color[6] = {0,0,0,0,0,0};
 
 void colorOpen() {
+    /*
     while(ColorSensor.begin() == false) {
         Serial.print("Color Sensor Not Found");
         if (ColorSensor.begin()) {
             break;
         }
     }
+    */
     // Now we're ready to get readings!
 }
 

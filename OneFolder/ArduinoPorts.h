@@ -3,28 +3,24 @@
 #define ArduinoPorts_h
 
 const int leftDirection = 8;
-const int leftSpeed = 10;
+const int leftSpeed = 5;
 
 const int rightDirection = 7;
-const int rightSpeed = 9;
+const int rightSpeed = 6;
 
+const int ultraRightSendPort = 16;
+const int ultraRightReceivePort = 17;
+const int ultraLeftSendPort = 9;
+const int ultraLeftReceivePort = 13;
+const int ultraTopSendPort = 3; //front top
+const int ultraTopReceivePort = 2;
+const int ultraBotSendPort = 10; //front bottom
+const int ultraBotReceivePort = 4;
 
-const int ultraRightSendPort = 1;
-const int ultraRightReceivePort = 1;
-const int ultraLeftSendPort = 1;
-const int ultraLeftReceivePort = 1;
-const int ultraFrontSendPort = 2;
-const int ultraFrontReceivePort = 3;
-const int ultraBackSendPort = 2;
-const int ultraBackReceivePort = 3;
+const int infraRightSendPort = A1;
 
-const int infraRightSendPort = 1;
-const int infraRightReceivePort = 1;
-const int infraLeftReceivePort = 1;
-const int infraLeftSendPort = 1;
-
-const int colorSendPort = 1;
-const int colorReceivePort = 1;
+const int colorSendPort = 19;
+const int colorReceivePort = 18;
 
 const int clawPort = 1;
 
