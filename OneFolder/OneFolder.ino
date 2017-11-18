@@ -7,6 +7,21 @@ Servo myservo;
 const byte leftStick = 0x4C; // Hex byte that represents leftStick, xBee-wise
 const byte rightStick = 0x52; // Hex byte that represents rightStick, xBee-wise
 
+//Button bytes
+const int LB = 1;
+const int RB = 2;
+const int A = 16;
+const int B = 32;
+const int X = 64;
+const int Y = 128;
+
+const int DpadUp = 1;
+const int DpadDown = 2;
+const int DpadLeft = 4;
+const int DpadRight = 8;
+const int Start = 16;
+const int Back = 32;
+
 
 /*****************************************************************************************
    EXPERIMENTAL CONSTS
@@ -31,13 +46,12 @@ const double DIST_ERROR = 0.1; //horiz dist btwn top and bottom sensor
 const double TIME_ONE_ROT = 1.0; //time in ms for robot to rotate a full circle
 const int FWD_THRESH = 5; //how long (in 0.1s intervals) to move forward in expl before rot
 const int ROT_THRESH = 7; //how long to rotate left and then right before fwd again
-
 const double L3R_THRESH = 0.1;
 /*****************************************************************************************/
 
 
 /***************************************************
-    ROBOT STATES AND VARS
+ *  ROBOT STATES AND VARS
        -1 -- STOP
         0 -- find_line
         1 -- find_block
@@ -51,75 +65,120 @@ int NEXT_STATE = 0; //helper var for when grabbing block
 double infra_avg;
 double lr_infra[4]; //for determining if reached fork, 2 for left and right rot
 double ultra_top, ultra_bot, ultra_left, ultra_right;
-double l3r_left[3], l3r_right[3]; //last 3 ultra left/right readings, used for orientation
+double l3r_left[3], l3r_right[3];
 bool HAS_BLOCK = false;
-int ROT_DIR = -1; //-1 for left, 0 for none, 1 for right
+int ROT_DIR = 0; //-1 for left, 0 for none, 1 for right
 int ROT_CTR = 0; //when exploring, keep ctr to know when to switch dir
 
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(leftSpeed, OUTPUT);
-  pinMode(rightDirection, OUTPUT);
-  pinMode(rightSpeed, OUTPUT);
-  pinMode(leftDirection, OUTPUT);
-  myservo.attach(clawPort);
-  pinMode(13, OUTPUT);
-  colorOpen();
-  ultraOn();
-
-  //testing
-  int color1[3] = {255, 0, 0};
-  int color2[3] = {254, 0, 0};
-  //Serial.println(compareColors(color1, color2));
+    Serial.begin(9600);
+    pinMode(leftSpeed, OUTPUT);
+    pinMode(rightDirection, OUTPUT);
+    pinMode(rightSpeed, OUTPUT);
+    pinMode(leftDirection, OUTPUT);
+    myservo.attach(clawPort);
+    pinMode(13, OUTPUT);
+    colorOpen();
+    ultraOn();
+    
+    //testing
+    int color1[3] = {255, 0, 0};
+    int color2[3] = {254, 0, 0};
+    //Serial.println(compareColors(color1, color2));
 }
 
 void loop() {
-  LOOP_RC();
+    LOOP_RC();
 }
 
 void LOOP_RC() {
-  if (Serial.available() >= 4) {
-    byte leftMag;
-    byte rightMag;
+    if (Serial.available() >= 4) {
+        byte leftMag;
+        byte rightMag;
+        byte nonFaceButtons;	
+        byte faceAndShoulderButtons;
+        
+        // for grabbing data
+        byte raw_data[4];
+        for (int i = 0; i < 4; i++)
+            raw_data[i] = Serial.read();
+    
+        // If we get out of sync realign data. Could also try Serial.flush()
+        for (int i = 0; i < 4; i++) {
+            if (raw_data[0] == 76 && raw_data[2] == 82) {
+                break;
+            }
+            byte temp = raw_data[0];
+            raw_data[0] = raw_data[1];
+            raw_data[1] = raw_data[2];
+            raw_data[2] = raw_data[3];
+            raw_data[3] = raw_data[4];
+            raw_data[4] = raw_data[5];
+            raw_data[5] = temp;   
+        }
+    
+        // for magnitudes
+        leftMag = raw_data[1];
+        rightMag = raw_data[3];
+    
+        //designed as a two stick drive system
+        if (leftMag >= 0 && leftMag <= 127) {
+          setLeftForwardSpeed(leftMag);
+        }
+        else if (leftMag > 127 && leftMag <= 255) {
+          leftMag -= 126;
+          setLeftBackwardSpeed(leftMag);
+        }
+        if (rightMag >= 0 && rightMag <= 127) {
+          setRightForwardSpeed(rightMag);
+        }
+        else if (rightMag >= 127 && rightMag <= 255) {
+          rightMag -= 126;
+          setRightBackwardSpeed(rightMag);
+    }
 
-    // for grabbing data
-    byte raw_data[4];
-    for (int i = 0; i < 4; i++)
-      raw_data[i] = Serial.read();
+  /* The data for the buttons is a word, where the high byte has A,B,X,Y,LB,RB
+     and the low byte has the DPAD, Back, Start, LeftStick and RightStick
+  LB = 1
+  RB = 2
+  A = 16
+  B = 32
+  X = 64
+  Y = 128
 
-    // If we get out of sync realign data. Could also try Serial.flush()
-    for (int i = 0; i < 4; i++) {
-      if (raw_data[0] == 76 && raw_data[2] == 82) {
-        break;
+  DpadUp = 1
+  DpadDown = 2
+  DpadLeft = 4
+  DpadRight = 8
+  Start = 16
+  Back = 32
+  
+  */   
+     //face buttons and shoulder buttons
+     faceAndShoulderButtons = raw_data[4];
+
+     if (faceAndShoulderButtons = A){
+      
       }
-      byte temp = raw_data[0];
-      raw_data[0] = raw_data[1];
-      raw_data[1] = raw_data[2];
-      raw_data[2] = raw_data[3];
-      raw_data[3] = temp;
-    }
+     if (faceAndShoulderButtons = B){
+      
+      }
+     if (faceAndShoulderButtons = X){
+      
+      }
+      if (faceAndShoulderButtons = Y){
+      
+      }
+      
+      if (faceAndShoulderButtons = LB){
+      
+      }
 
-    // for magnitudes
-    leftMag = raw_data[1];
-    rightMag = raw_data[3];
-
-    //designed as a two stick drive system
-    if (leftMag >= 0 && leftMag <= 127) {
-      setLeftForwardSpeed(leftMag);
+      if (faceAndShoulderButtons = RB){
+      
+      }
     }
-    else if (leftMag > 127 && leftMag <= 255) {
-      leftMag -= 126;
-      setLeftBackwardSpeed(leftMag);
-    }
-    if (rightMag >= 0 && rightMag <= 127) {
-      setRightForwardSpeed(rightMag);
-    }
-    else if (rightMag >= 127 && rightMag <= 255) {
-      rightMag -= 126;
-      setRightBackwardSpeed(rightMag);
-    }
-  }
 }
 
 
@@ -202,9 +261,10 @@ void STATE_findLine() { //state 0
         }
       default:
         break;
-    }
+	}
   }
 }
+
 
 void STATE_findBlock() { //state 1
   //check if wandered off line
@@ -357,5 +417,3 @@ bool isFork() {
   //if everyone is black, assume it's a fork
   return lr_infra[0] > INFRA_THRESH && lr_infra[1] > INFRA_THRESH && lr_infra[2] > INFRA_THRESH && lr_infra[0] > INFRA_THRESH;
 }
-
-

@@ -23,9 +23,8 @@ void setRightBackwardSpeed(int speed);
 void setLeftBackwardSpeed(int speed);
 void setRightForwardSpeed(int speed);
 
-//@Servo
-//everything can be done with myservo.write() :: takes in the amount of degrees you want
-
+//@Servo:
+void setServo(int degrees);
 
 //@ColorSensor
 void colorOpen();
