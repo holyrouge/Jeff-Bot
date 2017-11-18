@@ -8,44 +8,44 @@ const byte leftStick = 0x4C; // Hex byte that represents leftStick, xBee-wise
 const byte rightStick = 0x52; // Hex byte that represents rightStick, xBee-wise
 
 //Button bytes
-const int LB = 1;
-const int RB = 2;
-const int A = 16;
-const int B = 32;
-const int X = 64;
+const byte LB = 1;
+const byte RB = 2;
+const byte A = 16;
+const byte B = 32;
+const byte X = 64;
 const int Y = 128;
 
-const int DpadUp = 1;
-const int DpadDown = 2;
-const int DpadLeft = 4;
-const int DpadRight = 8;
-const int Start = 16;
-const int Back = 32;
+const byte DpadUp = 1;
+const byte DpadDown = 2;
+const byte DpadLeft = 4;
+const byte DpadRight = 8;
+const byte Start = 16;
+const byte Back = 32;
 
 
 /*****************************************************************************************
    EXPERIMENTAL CONSTS
  *****************************************************************************************/
-const int MAX_SPEED = 127;
+const byte MAX_SPEED = 127;
 
-const int OUR_COLOR = 0; //color of block to return; 0 for red, 1 for blue
+const byte OUR_COLOR = 0; //color of block to return; 0 for red, 1 for blue
 const int COLORS[2][3] = {{255, 0, 0}, {0, 0, 255}}; //color sensor readings for blocks
 const double COLOR_THRESH = 25; //max euclidean dist btwn colors for there to be a match
-const int INFRA_THRESH = 17; // < 17 = white, > 17 = snicker's bar; assuming infra does in fact go from 4-30
-const int SAFE_ROT_TIME = 0.1; //when line is found, rot this much to go away from edge
+const byte INFRA_THRESH = 17; // < 17 = white, > 17 = snicker's bar; assuming infra does in fact go from 4-30
+const double SAFE_ROT_TIME = 0.1; //when line is found, rot this much to go away from edge
 
 const int SERVO_OPEN = 0; //max degrees servo can open (or close?)
 const int SERVO_CLOSE = 180; //min degrees servo can close (or open?)
 
-const double DIST_THRESH = 3; //distance to stop before it detects a wall
-const double DIST_SLOW = 2; //block found --> go full speed until here
+const byte DIST_THRESH = 3; //distance to stop before it detects a wall
+const byte DIST_SLOW = 2; //block found --> go full speed until here
 const double DIST_STOP = 0.5; //block found --> ease in and stop here to pick up block
 const double DIST_ERROR = 0.1; //horiz dist btwn top and bottom sensor
 //dist error for when it finds wall and bot sensor in front of top so it thinks it's block
 
 const double TIME_ONE_ROT = 1.0; //time in ms for robot to rotate a full circle
-const int FWD_THRESH = 5; //how long (in 0.1s intervals) to move forward in expl before rot
-const int ROT_THRESH = 7; //how long to rotate left and then right before fwd again
+const byte FWD_THRESH = 5; //how long (in 0.1s intervals) to move forward in expl before rot
+const byte ROT_THRESH = 7; //how long to rotate left and then right before fwd again
 const double L3R_THRESH = 0.1;
 /*****************************************************************************************/
 
@@ -60,15 +60,15 @@ const double L3R_THRESH = 0.1;
         4 -- remove_block (from line)
         5 -- navigating maze ???
 ***************************************************/
-int STATE = 0;
-int NEXT_STATE = 0; //helper var for when grabbing block
+byte STATE = 0;
+byte NEXT_STATE = 0; //helper var for when grabbing block
 double infra_avg;
 double lr_infra[4]; //for determining if reached fork, 2 for left and right rot
 double ultra_top, ultra_bot, ultra_left, ultra_right;
 double l3r_left[3], l3r_right[3];
 bool HAS_BLOCK = false;
-int ROT_DIR = 0; //-1 for left, 0 for none, 1 for right
-int ROT_CTR = 0; //when exploring, keep ctr to know when to switch dir
+byte ROT_DIR = 0; //-1 for left, 0 for none, 1 for right
+byte ROT_CTR = 0; //when exploring, keep ctr to know when to switch dir
 
 
 void setup() {
